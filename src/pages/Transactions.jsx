@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFinanceStore } from "../store/useFinanceStore";
 import TransactionToolbar from "../components/transactions/TransactionToolbar";
 import TransactionTable from "../components/transactions/TransactionTable";
@@ -11,8 +10,8 @@ import EmptyState from "../components/ui/EmptyState";
 import { getFilteredTransactions } from "../utils/finance";
 
 const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] } },
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] } },
 };
 
 export default function Transactions() {
@@ -54,28 +53,46 @@ export default function Transactions() {
 
   return (
     <motion.div
-      className="space-y-8"
+      style={{ display: "flex", flexDirection: "column", gap: 28 }}
       initial="initial"
       animate="animate"
     >
       {/* Hero */}
       <motion.div
-        className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 16,
+        }}
         variants={fadeUp}
         initial="initial"
         animate="animate"
       >
         <div>
           <p
-            className="text-sm font-semibold tracking-widest uppercase"
-            style={{ color: "var(--color-primary)" }}
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: "var(--color-primary)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
           >
             Transactions
           </p>
-          <h1 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight gradient-text">
-            Filter, sort, search,
-            <br />
-            and manage entries.
+          <h1
+            style={{
+              marginTop: 6,
+              fontSize: 28,
+              fontWeight: 600,
+              letterSpacing: "-0.03em",
+              color: "var(--color-text-primary)",
+              lineHeight: 1.2,
+            }}
+          >
+            Filter, sort, and manage entries.
           </h1>
         </div>
 
@@ -84,10 +101,8 @@ export default function Transactions() {
         )}
       </motion.div>
 
-      {/* Toolbar */}
       <TransactionToolbar />
 
-      {/* Form */}
       <AnimatePresence>
         {showForm && role === "admin" && (
           <TransactionForm
@@ -102,7 +117,6 @@ export default function Transactions() {
         )}
       </AnimatePresence>
 
-      {/* Table */}
       {role !== "admin" && !filtered.length ? (
         <EmptyState
           title="Nothing here yet"

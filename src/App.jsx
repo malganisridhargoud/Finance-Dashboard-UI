@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Insights from "./pages/Insights";
@@ -52,52 +52,60 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AnimatePresence mode="wait">
-        {loading && <LoadingScreen key="loader" onComplete={() => setLoading(false)} />}
+      {/* Loading Screen Overlay */}
+      <AnimatePresence>
+        {loading && <LoadingScreen key="loader" />}
       </AnimatePresence>
 
-      {!loading && (
-        <div
-          className="min-h-screen bg-grid-pattern bg-noise"
-          style={{ background: "var(--color-surface)" }}
+      {/* Main App — always mounted, just hidden behind loader initially */}
+      <motion.div
+        style={{
+          minHeight: "100vh",
+          background: "#000",
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.6, delay: loading ? 0 : 0.3 }}
+      >
+        <Sidebar />
+        <main
+          style={{
+            position: "relative",
+            marginLeft: 220,
+            padding: "28px 36px 48px 36px",
+            minHeight: "100vh",
+            zIndex: 1,
+          }}
         >
-          <Sidebar />
-          <main
-            className="relative z-10"
-            style={{
-              marginLeft: 72,
-              padding: "32px 32px 48px 32px",
-              minHeight: "100vh",
-            }}
-          >
-            <AnimatedRoutes />
-          </main>
+          <AnimatedRoutes />
+        </main>
 
-          {/* Ambient Glow Orbs */}
-          <div
-            className="fixed pointer-events-none"
-            style={{
-              width: 600,
-              height: 600,
-              background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)",
-              top: -100,
-              right: -100,
-              zIndex: 0,
-            }}
-          />
-          <div
-            className="fixed pointer-events-none"
-            style={{
-              width: 400,
-              height: 400,
-              background: "radial-gradient(circle, rgba(6,182,212,0.04) 0%, transparent 70%)",
-              bottom: -100,
-              left: 100,
-              zIndex: 0,
-            }}
-          />
-        </div>
-      )}
+        {/* Ambient Glow Orbs */}
+        <div
+          className="fixed pointer-events-none"
+          style={{
+            width: 600,
+            height: 600,
+            background:
+              "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)",
+            top: -100,
+            right: -100,
+            zIndex: 0,
+          }}
+        />
+        <div
+          className="fixed pointer-events-none"
+          style={{
+            width: 400,
+            height: 400,
+            background:
+              "radial-gradient(circle, rgba(6,182,212,0.04) 0%, transparent 70%)",
+            bottom: -100,
+            left: 100,
+            zIndex: 0,
+          }}
+        />
+      </motion.div>
     </BrowserRouter>
   );
 }

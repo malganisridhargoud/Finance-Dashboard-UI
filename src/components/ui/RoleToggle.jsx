@@ -7,24 +7,29 @@ export default function RoleToggle() {
 
   return (
     <div
-      className="relative flex items-center gap-1 rounded-xl p-1"
       style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        borderRadius: 10,
+        padding: 3,
         background: "rgba(255,255,255,0.04)",
         border: "1px solid rgba(255,255,255,0.06)",
       }}
     >
-      {/* Sliding Pill Indicator */}
       <motion.div
-        className="absolute rounded-lg"
         style={{
-          height: "calc(100% - 8px)",
-          width: "calc(50% - 4px)",
-          top: 4,
-          background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
-          boxShadow: "0 2px 12px rgba(37,99,235,0.35)",
+          position: "absolute",
+          height: "calc(100% - 6px)",
+          width: "calc(50% - 3px)",
+          top: 3,
+          borderRadius: 8,
+          background: "#2563EB",
+          boxShadow: "0 1px 8px rgba(37,99,235,0.3)",
         }}
         animate={{
-          left: role === "viewer" ? 4 : "calc(50%)",
+          left: role === "viewer" ? 3 : "calc(50%)",
         }}
         transition={{
           type: "spring",
@@ -33,28 +38,30 @@ export default function RoleToggle() {
         }}
       />
 
-      <button
-        onClick={() => setRole("viewer")}
-        className="relative z-10 rounded-lg px-5 py-2 text-sm font-semibold transition-colors duration-200"
-        style={{
-          color: role === "viewer" ? "#fff" : "#64748B",
-          flex: 1,
-          cursor: "pointer",
-        }}
-      >
-        Viewer
-      </button>
-      <button
-        onClick={() => setRole("admin")}
-        className="relative z-10 rounded-lg px-5 py-2 text-sm font-semibold transition-colors duration-200"
-        style={{
-          color: role === "admin" ? "#fff" : "#64748B",
-          flex: 1,
-          cursor: "pointer",
-        }}
-      >
-        Admin
-      </button>
+      {["viewer", "admin"].map((r) => (
+        <button
+          key={r}
+          onClick={() => setRole(r)}
+          style={{
+            position: "relative",
+            zIndex: 1,
+            borderRadius: 8,
+            padding: "7px 18px",
+            fontSize: 12,
+            fontWeight: 500,
+            color: role === r ? "#fff" : "#6E6E73",
+            flex: 1,
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            outline: "none",
+            textTransform: "capitalize",
+            transition: "color 0.2s",
+          }}
+        >
+          {r}
+        </button>
+      ))}
     </div>
   );
 }

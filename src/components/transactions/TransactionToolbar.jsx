@@ -21,38 +21,43 @@ export default function TransactionToolbar() {
   ].filter(Boolean).length;
 
   const inputStyle = {
-    background: "rgba(10,10,15,0.6)",
+    background: "rgba(28,28,30,0.6)",
     border: "1px solid var(--color-border)",
     color: "var(--color-text-primary)",
-    borderRadius: 12,
-    padding: "10px 16px",
-    fontSize: 14,
+    borderRadius: 10,
+    padding: "9px 14px",
+    fontSize: 13,
+    fontWeight: 400,
     outline: "none",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    transition: "all 0.25s ease",
+    width: "100%",
   };
 
   return (
     <motion.div
-      className="grid gap-3 rounded-[20px] p-5 lg:grid-cols-5"
       style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+        gap: 10,
+        padding: 16,
+        borderRadius: "var(--radius-card)",
         background: "var(--color-surface-card)",
         border: "1px solid var(--color-border)",
-        backdropFilter: "blur(24px)",
+        backdropFilter: "blur(20px)",
       }}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <input
-        value={filters.search}
-        onChange={(e) => setFilter("search", e.target.value)}
-        placeholder="Search transactions..."
-        className="lg:col-span-2 input-glow"
-        style={{
-          ...inputStyle,
-          "::placeholder": { color: "var(--color-text-muted)" },
-        }}
-      />
+      <div style={{ gridColumn: "span 2" }}>
+        <input
+          value={filters.search}
+          onChange={(e) => setFilter("search", e.target.value)}
+          placeholder="Search transactions..."
+          className="input-glow"
+          style={inputStyle}
+        />
+      </div>
 
       <select
         value={filters.type}
@@ -95,33 +100,39 @@ export default function TransactionToolbar() {
 
       <motion.button
         onClick={resetFilters}
-        className="lg:col-span-5 relative overflow-hidden text-sm font-semibold"
         style={{
           ...inputStyle,
-          background: "rgba(255,255,255,0.03)",
-          color: "var(--color-text-secondary)",
+          gridColumn: "1 / -1",
+          background: "rgba(255,255,255,0.02)",
+          color: "var(--color-text-muted)",
           cursor: "pointer",
+          fontWeight: 500,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 8,
+          gap: 6,
         }}
         whileHover={{
-          background: "rgba(37,99,235,0.08)",
-          borderColor: "rgba(37,99,235,0.2)",
+          background: "rgba(37,99,235,0.06)",
           color: "#60A5FA",
+          borderColor: "rgba(37,99,235,0.15)",
         }}
         whileTap={{ scale: 0.98 }}
       >
         Reset filters
         {activeFilters > 0 && (
           <motion.span
-            className="inline-flex items-center justify-center rounded-full text-xs font-bold"
             style={{
-              width: 20,
-              height: 20,
+              width: 18,
+              height: 18,
+              borderRadius: "50%",
               background: "#2563EB",
               color: "#fff",
+              fontSize: 10,
+              fontWeight: 700,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}

@@ -1,41 +1,25 @@
-export default function Badge({ children, tone = "neutral", className = "" }) {
-  const tones = {
-    neutral: {
-      bg: "rgba(255,255,255,0.06)",
-      color: "#E2E8F0",
-      border: "rgba(255,255,255,0.08)",
-    },
-    income: {
-      bg: "rgba(37,99,235,0.12)",
-      color: "#60A5FA",
-      border: "rgba(37,99,235,0.2)",
-    },
-    expense: {
-      bg: "rgba(239,68,68,0.1)",
-      color: "#FCA5A5",
-      border: "rgba(239,68,68,0.15)",
-    },
-    admin: {
-      bg: "rgba(37,99,235,0.12)",
-      color: "#60A5FA",
-      border: "rgba(37,99,235,0.2)",
-    },
-    viewer: {
-      bg: "rgba(100,116,139,0.12)",
-      color: "#94A3B8",
-      border: "rgba(100,116,139,0.2)",
-    },
-  };
+const toneColors = {
+  income: { bg: "rgba(52,211,153,0.1)", color: "#34D399", border: "rgba(52,211,153,0.15)" },
+  expense: { bg: "rgba(248,113,113,0.1)", color: "#F87171", border: "rgba(248,113,113,0.15)" },
+  default: { bg: "rgba(255,255,255,0.04)", color: "#A1A1A6", border: "rgba(255,255,255,0.08)" },
+};
 
-  const style = tones[tone] || tones.neutral;
+export default function Badge({ children, tone }) {
+  const style = toneColors[tone] || toneColors.default;
 
   return (
     <span
-      className={`shimmer-badge inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide ${className}`}
       style={{
+        display: "inline-block",
+        padding: "3px 8px",
+        borderRadius: 6,
+        fontSize: 11,
+        fontWeight: 500,
         background: style.bg,
         color: style.color,
         border: `1px solid ${style.border}`,
+        letterSpacing: "0.01em",
+        textTransform: "capitalize",
       }}
     >
       {children}

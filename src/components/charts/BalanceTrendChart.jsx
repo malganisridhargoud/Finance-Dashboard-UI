@@ -12,49 +12,48 @@ import {
 export default function BalanceTrendChart({ data = [] }) {
   return (
     <motion.div
-      className="glass-card p-6"
-      initial={{ opacity: 0, y: 30 }}
+      className="glass-card"
+      style={{ padding: "22px" }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.1, ease: [0.34, 1.56, 0.64, 1] }}
-      whileHover={{
-        boxShadow: "0 8px 40px rgba(37,99,235,0.08), 0 0 0 1px rgba(37,99,235,0.1)",
-      }}
+      transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="mb-5 flex items-center justify-between">
+      <div style={{ marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <h3
-            className="text-lg font-bold"
-            style={{ color: "var(--color-text-primary)" }}
-          >
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-primary)", letterSpacing: "-0.01em" }}>
             Balance Trend
           </h3>
-          <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+          <p style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 2 }}>
             Rolling monthly movement
           </p>
         </div>
-        <div
-          className="rounded-lg px-3 py-1 text-xs font-semibold"
+        <span
           style={{
+            fontSize: 10,
+            fontWeight: 600,
+            padding: "3px 8px",
+            borderRadius: 6,
             background: "rgba(37,99,235,0.1)",
             color: "#60A5FA",
             border: "1px solid rgba(37,99,235,0.15)",
+            letterSpacing: "0.03em",
+            textTransform: "uppercase",
           }}
         >
           Live
-        </div>
+        </span>
       </div>
 
-      <div className="h-72 w-full">
+      <div style={{ height: 260, width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 8, right: 16, left: -24, bottom: 0 }}>
             <defs>
               <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#2563EB" stopOpacity={0.35} />
-                <stop offset="50%" stopColor="#2563EB" stopOpacity={0.1} />
-                <stop offset="100%" stopColor="#2563EB" stopOpacity={0.01} />
+                <stop offset="0%" stopColor="#2563EB" stopOpacity={0.25} />
+                <stop offset="100%" stopColor="#2563EB" stopOpacity={0.02} />
               </linearGradient>
               <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
                 <feMerge>
                   <feMergeNode in="coloredBlur" />
                   <feMergeNode in="SourceGraphic" />
@@ -68,41 +67,41 @@ export default function BalanceTrendChart({ data = [] }) {
             />
             <XAxis
               dataKey="month"
-              tick={{ fill: "#64748B", fontSize: 11, fontWeight: 500 }}
+              tick={{ fill: "#6E6E73", fontSize: 10, fontWeight: 500 }}
               axisLine={{ stroke: "rgba(255,255,255,0.06)" }}
               tickLine={false}
             />
             <YAxis
-              tick={{ fill: "#64748B", fontSize: 11, fontWeight: 500 }}
+              tick={{ fill: "#6E6E73", fontSize: 10, fontWeight: 500 }}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip
               contentStyle={{
-                background: "rgba(10, 10, 15, 0.95)",
-                border: "1px solid rgba(37,99,235,0.2)",
-                borderRadius: 12,
-                color: "#fff",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.5), 0 0 20px rgba(37,99,235,0.1)",
-                backdropFilter: "blur(12px)",
-                fontSize: 13,
+                background: "rgba(28, 28, 30, 0.95)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 10,
+                color: "#F5F5F7",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+                fontSize: 12,
+                padding: "8px 12px",
               }}
-              labelStyle={{ color: "#94A3B8", fontWeight: 600 }}
-              cursor={{ stroke: "rgba(37,99,235,0.3)", strokeWidth: 1 }}
+              labelStyle={{ color: "#A1A1A6", fontWeight: 500, fontSize: 11 }}
+              cursor={{ stroke: "rgba(37,99,235,0.2)", strokeWidth: 1 }}
             />
             <Area
               type="monotone"
               dataKey="balance"
               stroke="#2563EB"
-              strokeWidth={2.5}
+              strokeWidth={2}
               fill="url(#trendFill)"
               filter="url(#glow)"
               dot={false}
               activeDot={{
-                r: 5,
+                r: 4,
                 stroke: "#2563EB",
                 strokeWidth: 2,
-                fill: "#0A0A0F",
+                fill: "#000",
               }}
             />
           </AreaChart>

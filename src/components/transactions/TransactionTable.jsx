@@ -5,14 +5,14 @@ import EmptyState from "../ui/EmptyState";
 import { formatCurrency, formatDate } from "../../utils/finance";
 
 const rowVariants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, y: 8 },
   visible: (i) => ({
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
-      delay: i * 0.05,
-      duration: 0.4,
-      ease: [0.34, 1.56, 0.64, 1],
+      delay: i * 0.04,
+      duration: 0.35,
+      ease: [0.25, 0.46, 0.45, 0.94],
     },
   }),
 };
@@ -27,35 +27,38 @@ export default function TransactionTable({
     return (
       <EmptyState
         title="No matching transactions"
-        description="Change filters, clear search, or add a new transaction from admin mode."
+        description="Change filters or add a new transaction from admin mode."
       />
     );
   }
 
   return (
     <div
-      className="overflow-hidden rounded-[20px]"
       style={{
+        overflow: "hidden",
+        borderRadius: "var(--radius-card)",
         background: "var(--color-surface-card)",
         border: "1px solid var(--color-border)",
-        backdropFilter: "blur(24px)",
+        backdropFilter: "blur(20px)",
       }}
     >
-      <div className="overflow-x-auto">
-        <table className="min-w-full">
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr
-              style={{
-                background: "rgba(255,255,255,0.02)",
-                borderBottom: "1px solid var(--color-border)",
-              }}
-            >
+            <tr style={{ borderBottom: "1px solid var(--color-border)" }}>
               {["Date", "Description", "Category", "Type", "Amount", "Actions"].map(
                 (col) => (
                   <th
                     key={col}
-                    className="px-5 py-4 text-left text-xs uppercase tracking-wider font-semibold"
-                    style={{ color: "var(--color-text-muted)" }}
+                    style={{
+                      padding: "11px 18px",
+                      textAlign: "left",
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: "var(--color-text-muted)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                    }}
                   >
                     {col}
                   </th>
@@ -70,61 +73,47 @@ export default function TransactionTable({
                 className="hover-beam"
                 style={{
                   borderBottom: "1px solid var(--color-border)",
-                  transition: "background 0.3s ease",
+                  cursor: "default",
                 }}
                 custom={i}
                 variants={rowVariants}
                 initial="hidden"
                 animate="visible"
                 whileHover={{
-                  background: "rgba(37,99,235,0.04)",
+                  background: "rgba(255,255,255,0.02)",
                 }}
               >
-                <td
-                  className="px-5 py-4 text-sm"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
+                <td style={{ padding: "12px 18px", fontSize: 12, color: "var(--color-text-muted)", fontWeight: 500 }}>
                   {formatDate(tx.date)}
                 </td>
-                <td className="px-5 py-4">
-                  <div
-                    className="font-semibold text-sm"
-                    style={{ color: "var(--color-text-primary)" }}
-                  >
+                <td style={{ padding: "12px 18px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: "var(--color-text-primary)" }}>
                     {tx.description}
                   </div>
-                  <div
-                    className="text-xs mt-0.5"
-                    style={{ color: "var(--color-text-muted)" }}
-                  >
-                    ID: {tx.id}
-                  </div>
                 </td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "12px 18px" }}>
                   <Badge>{tx.category}</Badge>
                 </td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "12px 18px" }}>
                   <Badge tone={tx.type}>{tx.type}</Badge>
                 </td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "12px 18px" }}>
                   <span
-                    className="text-sm font-bold"
                     style={{
-                      color: tx.type === "income" ? "#60A5FA" : "#FCA5A5",
-                      textShadow:
-                        tx.type === "income"
-                          ? "0 0 12px rgba(37,99,235,0.3)"
-                          : "0 0 12px rgba(239,68,68,0.2)",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: tx.type === "income" ? "#34D399" : "#F87171",
+                      letterSpacing: "-0.01em",
                     }}
                   >
-                    {tx.type === "income" ? "+" : "-"}
+                    {tx.type === "income" ? "+" : "−"}
                     {formatCurrency(tx.amount)}
                   </span>
                 </td>
-                <td className="px-5 py-4">
+                <td style={{ padding: "12px 18px" }}>
                   {role === "admin" ? (
-                    <div className="flex gap-2">
-                      <Button variant="secondary" onClick={() => onEdit?.(tx)}>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <Button variant="ghost" onClick={() => onEdit?.(tx)}>
                         Edit
                       </Button>
                       <Button variant="danger" onClick={() => onDelete?.(tx.id)}>
@@ -132,10 +121,7 @@ export default function TransactionTable({
                       </Button>
                     </div>
                   ) : (
-                    <span
-                      className="text-xs font-medium"
-                      style={{ color: "var(--color-text-muted)" }}
-                    >
+                    <span style={{ fontSize: 11, color: "var(--color-text-muted)" }}>
                       View only
                     </span>
                   )}

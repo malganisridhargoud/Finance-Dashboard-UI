@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import {
   Cell,
+  Label,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -14,22 +15,26 @@ const COLORS = [
   "#60A5FA",
   "#06B6D4",
   "#0EA5E9",
-  "#38BDF8",
   "#818CF8",
-  "#A5B4FC",
+  "#A78BFA",
+  "#38BDF8",
 ];
 
-function CustomLabel({ viewBox, total }) {
-  const { cx, cy } = viewBox;
+function CustomLabel(props) {
+  const { total } = props;
+  const cx = props.viewBox?.cx ?? props.cx ?? 0;
+  const cy = props.viewBox?.cy ?? props.cy ?? 0;
+  if (!cx && !cy) return null;
   return (
     <g>
       <text
         x={cx}
-        y={cy - 8}
+        y={cy - 6}
         textAnchor="middle"
-        fill="#64748B"
-        fontSize={11}
+        fill="#6E6E73"
+        fontSize={10}
         fontWeight={600}
+        style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
       >
         Total Spent
       </text>
@@ -37,9 +42,10 @@ function CustomLabel({ viewBox, total }) {
         x={cx}
         y={cy + 14}
         textAnchor="middle"
-        fill="#F8FAFC"
-        fontSize={18}
-        fontWeight={700}
+        fill="#F5F5F7"
+        fontSize={16}
+        fontWeight={600}
+        letterSpacing="-0.02em"
       >
         {formatCurrency(total)}
       </text>
@@ -52,57 +58,50 @@ export default function SpendingBreakdownChart({ data = [] }) {
 
   return (
     <motion.div
-      className="glass-card p-6"
-      initial={{ opacity: 0, y: 30 }}
+      className="glass-card"
+      style={{ padding: 22 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
-      whileHover={{
-        boxShadow: "0 8px 40px rgba(37,99,235,0.08), 0 0 0 1px rgba(37,99,235,0.1)",
-      }}
+      transition={{ duration: 0.45, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="mb-5">
-        <h3
-          className="text-lg font-bold"
-          style={{ color: "var(--color-text-primary)" }}
-        >
+      <div style={{ marginBottom: 18 }}>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: "var(--color-text-primary)", letterSpacing: "-0.01em" }}>
           Spending Breakdown
         </h3>
-        <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-          Expense concentration by category
+        <p style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 2 }}>
+          Expense by category
         </p>
       </div>
 
-      <div className="h-72 w-full">
+      <div style={{ height: 260, width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
               dataKey="value"
               nameKey="name"
-              innerRadius={65}
-              outerRadius={100}
-              paddingAngle={3}
+              innerRadius={60}
+              outerRadius={95}
+              paddingAngle={2}
               strokeWidth={0}
             >
               {data.map((_, index) => (
-                <Cell
-                  key={index}
-                  fill={COLORS[index % COLORS.length]}
-                  style={{
-                    filter: `drop-shadow(0 0 6px ${COLORS[index % COLORS.length]}40)`,
-                  }}
-                />
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}
-              <CustomLabel total={total} />
+              <Label
+                content={<CustomLabel total={total} />}
+                position="center"
+              />
             </Pie>
             <Tooltip
               contentStyle={{
-                background: "rgba(10, 10, 15, 0.95)",
-                border: "1px solid rgba(37,99,235,0.2)",
-                borderRadius: 12,
-                color: "#fff",
-                boxShadow: "0 8px 30px rgba(0,0,0,0.5)",
-                fontSize: 13,
+                background: "rgba(28, 28, 30, 0.95)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 10,
+                color: "#F5F5F7",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+                fontSize: 12,
+                padding: "8px 12px",
               }}
               formatter={(value) => [formatCurrency(value), "Spent"]}
             />
@@ -110,20 +109,19 @@ export default function SpendingBreakdownChart({ data = [] }) {
         </ResponsiveContainer>
       </div>
 
-      {/* Custom Legend */}
-      <div className="mt-4 flex flex-wrap gap-3 justify-center">
+      {/* Legend */}
+      <div style={{ marginTop: 14, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
         {data.slice(0, 6).map((d, i) => (
-          <div key={d.name} className="flex items-center gap-1.5 text-xs">
+          <div key={d.name} style={{ display: "flex", alignItems: "center", gap: 5 }}>
             <div
-              className="rounded-full"
               style={{
-                width: 8,
-                height: 8,
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
                 background: COLORS[i % COLORS.length],
-                boxShadow: `0 0 6px ${COLORS[i % COLORS.length]}50`,
               }}
             />
-            <span style={{ color: "#94A3B8" }}>{d.name}</span>
+            <span style={{ fontSize: 11, color: "#6E6E73", fontWeight: 500 }}>{d.name}</span>
           </div>
         ))}
       </div>

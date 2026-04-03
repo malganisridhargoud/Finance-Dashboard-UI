@@ -44,7 +44,7 @@ export default function LoadingScreen({ onComplete }) {
   return (
     <motion.div
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: "#050508" }}
+      style={{ background: "#000" }}
       variants={containerVariants}
       exit="exit"
       onAnimationComplete={(def) => {

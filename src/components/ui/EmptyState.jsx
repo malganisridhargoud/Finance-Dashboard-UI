@@ -1,94 +1,49 @@
 import { motion } from "framer-motion";
-import Button from "./Button";
 
-export default function EmptyState({
-  title = "No data found",
-  description = "Try changing filters or add a new transaction.",
-  actionLabel,
-  onAction,
-}) {
+export default function EmptyState({ title, description }) {
   return (
     <motion.div
-      className="glass-card p-10 text-center"
-      initial={{ opacity: 0, y: 20 }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "60px 24px",
+        textAlign: "center",
+      }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4 }}
     >
-      {/* Floating SVG Illustration */}
+      {/* Simple icon */}
       <motion.div
-        className="mx-auto mb-5"
-        style={{ width: 80, height: 80 }}
-        animate={{ y: [0, -6, 0] }}
+        style={{
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 16,
+        }}
+        animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <svg
-          viewBox="0 0 80 80"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          width="80"
-          height="80"
-        >
-          {/* Box */}
-          <rect
-            x="20"
-            y="28"
-            width="40"
-            height="32"
-            rx="4"
-            stroke="#2563EB"
-            strokeWidth="1.5"
-            fill="rgba(37,99,235,0.05)"
-          />
-          {/* Lid */}
-          <path
-            d="M16 28 L40 16 L64 28"
-            stroke="#2563EB"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-          />
-          {/* Particles */}
-          <motion.circle
-            cx="30"
-            cy="20"
-            r="2"
-            fill="#2563EB"
-            animate={{ opacity: [0.2, 0.8, 0.2], y: [0, -4, 0] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-          />
-          <motion.circle
-            cx="50"
-            cy="14"
-            r="1.5"
-            fill="#06B6D4"
-            animate={{ opacity: [0.3, 0.7, 0.3], y: [0, -5, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-          />
-          <motion.circle
-            cx="42"
-            cy="10"
-            r="1"
-            fill="#3B82F6"
-            animate={{ opacity: [0.2, 0.9, 0.2], y: [0, -3, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, delay: 0.3 }}
-          />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6E6E73" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
       </motion.div>
 
-      <h3
-        className="text-lg font-bold"
-        style={{ color: "var(--color-text-primary)" }}
-      >
-        {title}
-      </h3>
-      <p className="mt-2 text-sm" style={{ color: "var(--color-text-muted)" }}>
-        {description}
+      <p style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-primary)", letterSpacing: "-0.01em" }}>
+        {title || "Nothing to display"}
       </p>
-      {actionLabel && onAction ? (
-        <div className="mt-6">
-          <Button onClick={onAction}>{actionLabel}</Button>
-        </div>
-      ) : null}
+      <p style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 4, maxWidth: 280, lineHeight: 1.5 }}>
+        {description || "Try adjusting your filters or adding new data."}
+      </p>
     </motion.div>
   );
 }
